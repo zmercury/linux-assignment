@@ -616,6 +616,8 @@ curl -k https://portal.lhotse.com
 
 📸 **Screenshot:** Both websites loading in Firefox with the padlock icon (HTTPS), certificate details.
 
+## Group Wise Separate Extra Services
+
 ## ✅ TASK 4: Extra Service — FTP Server (vsftpd)
 
 A great choice for your extra service is **vsftpd** (Very Secure FTP Daemon) — it's well-documented, practical, and easy to demonstrate from the Ubuntu client.
@@ -696,6 +698,8 @@ ftp 192.168.56.101
 ```
 
 📸 **Screenshot:** FileZilla connected, file transfer in both directions.
+
+## USE YOUR OWN ISSUE ENCOUNTERED AND HOW YOU FIXED THEM
 
 ## Section 5: Troubleshooting Issues Encountered
 
@@ -898,4 +902,3 @@ After applying these changes, users were able to log in and access their home di
 ### Conclusion
 
 Throughout the configuration process, several issues related to **port conflicts, incorrect service configurations, SSL certificate references, and authentication settings** were encountered. These issues were systematically identified through log analysis, configuration file inspection, and testing. After applying the necessary corrections, all services including **DNS, Email, Web Server (HTTPS), and FTP** were successfully configured and tested using the Ubuntu client system.
-
