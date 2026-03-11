@@ -1,14 +1,10 @@
----
-tags:
-  - study
-  - linux
----
-## Stuff to do 
+# Linux Assignment
 
 Building a small company network inside virtual machine
 
-***CentOS machine acts as the server 
-Ubuntu machine acts as the client 
+**CentOS machine acts as the server**
+**Ubuntu machine acts as the client**
+
 > Client will connect to the server and use it services
 
 ```
@@ -38,6 +34,7 @@ Before anything else, both VMs need to communicate with each other.
 - Go to **Settings → Network**
 - Set **Adapter 1** to: `NAT` (for internet access)
 - Set **Adapter 2** to: `Host-Only Adapter` (so they talk to each other)
+
 ## 📋 Initial Setup on CentOS Server
 
 First, log into your CentOS server and run these foundational commands:
@@ -61,25 +58,31 @@ sudo setenforce 0
 sudo sed -i 's/SELINUX=enforcing/SELINUX=permissive/' /etc/selinux/config
 ```
 
-> *If it doesn't show Ip address in host only adapter run this to get an Ip*
+> _If it doesn't show Ip address in host only adapter run this to get an Ip_
+
 # Fix Option 1 (Recommended): Use Network Manager
 
 Most modern Linux systems use **Network Manager**.
 
 Try:
+
 ```bash
 nmcli device status
 ```
+
 Then request an IP for the host-only adapter:
+
 ```bash
 sudo nmcli device connect enp0s8
 ```
+
 Then check again:
+
 ```bash
 ip addr show
 ```
 
-**Host Only IP Address (mero pc ko): `192.168.56.101`** 
+**Host Only IP Address (mero pc ko): `192.168.56.101`**
 
 ## ✅ TASK 1: DNS Server using BIND
 
@@ -190,13 +193,15 @@ sudo systemctl status named
 
 **Step 6 — Open firewall for DNS**
 
-Make sure to enable the firewall that was disabled earlier 
+Make sure to enable the firewall that was disabled earlier
+
 ```bash
-sudo systemctl start firewalld 
+sudo systemctl start firewalld
 sudo systemctl enable firewalld
 ```
 
 then do following:
+
 ```bash
 sudo firewall-cmd --permanent --add-service=dns
 sudo firewall-cmd --reload
@@ -224,9 +229,11 @@ Add/change these lines:
 DNS=192.168.56.101
 Domains=lhotse.com
 ````
+
 > You have to uncomment the DNS and Domain and add your Ip and your group link
 
 📸 **Screenshot opportunities:** `nslookup` and `dig` results, `ping` working, both forward and reverse lookups.
+
 ## ✅ TASK 2: Email Server (Postfix + Dovecot + SSL/TLS)
 
 ### On CentOS Server
@@ -406,7 +413,6 @@ echo "Hello from user1" | mail -s "Test Email" user2@lhotse.com
 sudo ls /home/user2/Maildir/new/
 ```
 
-
 ### On Ubuntu Client — Set up Thunderbird
 
 ```bash
@@ -418,8 +424,8 @@ sudo apt install thunderbird -y
 1. Click **"Set up an existing email"**
 2. Enter: Name → `User One`, Email → `user1@lhotse.com`, Password → your password
 3. Click **Configure Manually** and set:
-    - **Incoming (IMAP):** `192.168.56.101`, Port `993`, SSL/TLS
-    - **Outgoing (SMTP):** `192.168.56.101`, Port `587`, STARTTLS
+   - **Incoming (IMAP):** `192.168.56.101`, Port `993`, SSL/TLS
+   - **Outgoing (SMTP):** `192.168.56.101`, Port `587`, STARTTLS
 4. Accept the self-signed certificate warning
 5. Do the same for `user2@lhotse.com`
 6. Send an email from user1 to user2 and verify it arrives
@@ -457,11 +463,13 @@ sudo nano /var/www/site1/index.html
 ```html
 <!DOCTYPE html>
 <html>
-<head><title>Lhotse - Site 1</title></head>
-<body>
-  <h1>Welcome to Lhotse Main Website</h1>
-  <p>Server: server.lhotse.com | Secure HTTPS connection</p>
-</body>
+  <head>
+    <title>Lhotse - Site 1</title>
+  </head>
+  <body>
+    <h1>Welcome to Lhotse Main Website</h1>
+    <p>Server: server.lhotse.com | Secure HTTPS connection</p>
+  </body>
 </html>
 ```
 
@@ -475,11 +483,13 @@ sudo nano /var/www/site2/index.html
 ```html
 <!DOCTYPE html>
 <html>
-<head><title>Lhotse - Site 2</title></head>
-<body>
-  <h1>Lhotse Secondary Website</h1>
-  <p>This is a second virtual host on server.lhotse.com</p>
-</body>
+  <head>
+    <title>Lhotse - Site 2</title>
+  </head>
+  <body>
+    <h1>Lhotse Secondary Website</h1>
+    <p>This is a second virtual host on server.lhotse.com</p>
+  </body>
 </html>
 ```
 
@@ -557,24 +567,24 @@ sudo systemctl restart named
 ```
 
 **Step 6 — Start Apache**
-you might get an error here, if you do 
+you might get an error here, if you do
 
 ```bash
-# open apche ssl config 
+# open apche ssl config
 sudo vim /etc/httpd/conf.d/ssl.conf
 
 # find these line
-SSLCertificateFile /etc/pki/tls/certs/localhost.crt  
+SSLCertificateFile /etc/pki/tls/certs/localhost.crt
 SSLCertificateKeyFile /etc/pki/tls/private/localhost.key
 
-# replace with the one you made earlier 
-SSLCertificateFile /etc/ssl/lhotse/web.lhotse.com.crt  
+# replace with the one you made earlier
+SSLCertificateFile /etc/ssl/lhotse/web.lhotse.com.crt
 SSLCertificateKeyFile /etc/ssl/lhotse/web.lhotse.com.key
 
 # test now
 sudo apachectl configtest
 ```
- 
+
 ```bash
 # Test config syntax
 sudo apachectl configtest
@@ -687,11 +697,12 @@ ftp 192.168.56.101
 
 📸 **Screenshot:** FileZilla connected, file transfer in both directions.
 
-## Section 5: Troubleshooting Issues Encountered 
+## Section 5: Troubleshooting Issues Encountered
 
 ### 5. Troubleshooting Issues Encountered and Solutions
 
 During the installation and configuration of the DNS server, email server, web server, and additional service, several technical issues were encountered. The following section describes the major problems, how they were identified, and the steps taken to resolve them.
+
 ### 5.1 Dovecot Service Failure Due to Port Conflict
 
 #### Problem
@@ -699,12 +710,16 @@ During the installation and configuration of the DNS server, email server, web s
 While starting the Dovecot service, the server failed to start and produced the following error:
 
 ```bash
-Error: service(submission-login): listen(*, 587) failed: Address already in use  
+Error: service(submission-login): listen(*, 587) failed: Address already in use
 Fatal: Failed to start listeners
 ```
+
 #### Cause
+
 Port **587** was already being used by the **Postfix SMTP submission service**, causing a conflict with Dovecot attempting to listen on the same port.
+
 #### Solution
+
 The Dovecot configuration files were inspected using:
 
 ```
@@ -712,7 +727,6 @@ grep -R "submission" /etc/dovecot
 ```
 
 The unnecessary **submission-login service configuration** was commented out in the Dovecot configuration file.
-
 
 After modifying the configuration, the service was restarted:
 
@@ -723,7 +737,9 @@ sudo systemctl restart dovecot
 The service then started successfully.
 
 ### 5.2 Email Delivery Failure Due to Incorrect Domain
+
 #### Problem
+
 When attempting to send emails using the `mail` command, the messages remained in the mail queue and were not delivered.
 
 Example output:
@@ -731,14 +747,18 @@ Example output:
 ```bash
 (connect to groupname.com:25: Connection refused)
 ```
+
 #### Cause
+
 The email was being sent to a domain that did not exist within the locally configured mail server. The mail server attempted to deliver the email externally instead of locally.
+
 #### Solution
+
 The **Postfix configuration file** `/etc/postfix/main.cf` was reviewed and corrected to include the correct domain configuration:
 
 ```bash
-myhostname = server.lhotse.com  
-mydomain = lhotse.com  
+myhostname = server.lhotse.com
+mydomain = lhotse.com
 mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain
 ```
 
@@ -753,13 +773,19 @@ Emails were then delivered successfully to local users.
 ### 5.3 Thunderbird Email Sending Failure (STARTTLS Error)
 
 #### Problem
+
 While sending emails using Thunderbird from the Ubuntu client, the following error occurred:
+
 ```bash
 Must issue a STARTTLS command first
 ```
+
 #### Cause
+
 The SMTP server required encrypted communication, but the Thunderbird client configuration did not correctly initiate **STARTTLS encryption**.
+
 #### Solution
+
 The SMTP configuration in Thunderbird was updated with the correct settings:
 
 | Setting        | Value           |
@@ -773,15 +799,21 @@ The SMTP configuration in Thunderbird was updated with the correct settings:
 After correcting the SMTP configuration, email transmission from Thunderbird worked correctly.
 
 ### 5.4 TLS Configuration Error in Postfix
+
 #### Problem
+
 Postfix failed to start properly and generated the following error in the mail logs:
 
 ```
 fatal: bad boolean configuration: smtpd_use_tls = true
 ```
+
 #### Cause
+
 Postfix expects Boolean values such as **yes or no**, but the configuration mistakenly used **true**, which is not recognized.
+
 #### Solution
+
 The incorrect configuration was corrected in `/etc/postfix/main.cf`:
 
 ```bash
@@ -801,16 +833,22 @@ sudo systemctl restart postfix
 The SMTP service then functioned normally.
 
 ### 5.5 SSL Certificate Error in Apache Web Server
+
 #### Problem
+
 When testing the Apache configuration, the following error occurred:
 `SSLCertificateFile: file '/etc/pki/tls/certs/localhost.crt' does not exist`
+
 #### Cause
+
 The default SSL certificate referenced in the Apache configuration did not exist. A custom self-signed SSL certificate had been created earlier for the domain.
+
 #### Solution
+
 The Apache SSL configuration file was updated to reference the correct certificate:
 
 ```bash
-SSLCertificateFile /etc/ssl/lhotse/web.lhotse.com.crt  
+SSLCertificateFile /etc/ssl/lhotse/web.lhotse.com.crt
 SSLCertificateKeyFile /etc/ssl/lhotse/web.lhotse.com.key
 ```
 
@@ -829,17 +867,23 @@ sudo systemctl restart httpd
 The HTTPS website then functioned correctly.
 
 ### 5.6 FTP Login Failure (530 Permission Denied)
+
 #### Problem
+
 When connecting to the FTP server using FileZilla, the following error occurred:
 `530 Permission denied`
+
 #### Cause
+
 The FTP server configuration did not allow local system users to log in.
+
 #### Solution
+
 The FTP configuration file `/etc/vsftpd/vsftpd.conf` was modified to enable local user access:
 
 ```
-anonymous_enable=NO  
-local_enable=YES  
+anonymous_enable=NO
+local_enable=YES
 write_enable=YES
 ```
 
@@ -854,3 +898,4 @@ After applying these changes, users were able to log in and access their home di
 ### Conclusion
 
 Throughout the configuration process, several issues related to **port conflicts, incorrect service configurations, SSL certificate references, and authentication settings** were encountered. These issues were systematically identified through log analysis, configuration file inspection, and testing. After applying the necessary corrections, all services including **DNS, Email, Web Server (HTTPS), and FTP** were successfully configured and tested using the Ubuntu client system.
+
