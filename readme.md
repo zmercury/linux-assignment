@@ -457,7 +457,7 @@ sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
 
 **Step 3 — Create two websites (for Credit/Distinction marks)**
 
-Website 1:
+Website:
 
 ```bash
 sudo mkdir -p /var/www/site
@@ -468,7 +468,7 @@ sudo nano /var/www/site/index.html
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Lhotse - Site</title>
+    <title>Lhotse - Website</title>
   </head>
   <body>
     <h1>Welcome to Lhotse Main Website</h1>
@@ -492,7 +492,7 @@ sudo nano /etc/httpd/conf.d/site.conf
 
 <VirtualHost *:443>
     ServerName www.lhotse.com
-    DocumentRoot /var/www/site1
+    DocumentRoot /var/www/site
 
     SSLEngine on
     SSLCertificateFile /etc/ssl/lhotse/web.lhotse.com.crt
