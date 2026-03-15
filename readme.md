@@ -259,6 +259,8 @@ sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
 sudo chmod 600 mail.lhotse.com.key
 ```
 
+> / is to seperate lines, dont use if you're typing it out
+
 **Step 3 — Configure Postfix**
 
 ````bash
@@ -451,20 +453,22 @@ sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
     -subj "/C=NP/ST=Bagmati/L=Kathmandu/O=Lhotse/CN=www.lhotse.com"
 ```
 
+> / is to seperate lines, dont use if you're typing it out
+
 **Step 3 — Create two websites (for Credit/Distinction marks)**
 
 Website 1:
 
 ```bash
-sudo mkdir -p /var/www/site1
-sudo nano /var/www/site1/index.html
+sudo mkdir -p /var/www/site
+sudo nano /var/www/site/index.html
 ```
 
 ```html
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Lhotse - Site 1</title>
+    <title>Lhotse - Site</title>
   </head>
   <body>
     <h1>Welcome to Lhotse Main Website</h1>
@@ -473,36 +477,16 @@ sudo nano /var/www/site1/index.html
 </html>
 ```
 
-Website 2:
-
-```bash
-sudo mkdir -p /var/www/site2
-sudo nano /var/www/site2/index.html
-```
-
-```html
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Lhotse - Site 2</title>
-  </head>
-  <body>
-    <h1>Lhotse Secondary Website</h1>
-    <p>This is a second virtual host on server.lhotse.com</p>
-  </body>
-</html>
-```
-
 **Step 4 — Create Virtual Host config files**
 
 ```bash
-sudo nano /etc/httpd/conf.d/site1.conf
+sudo nano /etc/httpd/conf.d/site.conf
 ```
 
 ```apache
 <VirtualHost *:80>
     ServerName www.lhotse.com
-    DocumentRoot /var/www/site1
+    DocumentRoot /var/www/site
     Redirect permanent / https://www.lhotse.com/
 </VirtualHost>
 
@@ -514,34 +498,7 @@ sudo nano /etc/httpd/conf.d/site1.conf
     SSLCertificateFile /etc/ssl/lhotse/web.lhotse.com.crt
     SSLCertificateKeyFile /etc/ssl/lhotse/web.lhotse.com.key
 
-    <Directory /var/www/site1>
-        Options Indexes FollowSymLinks
-        AllowOverride All
-        Require all granted
-    </Directory>
-</VirtualHost>
-```
-
-```bash
-sudo nano /etc/httpd/conf.d/site2.conf
-```
-
-```apache
-<VirtualHost *:80>
-    ServerName portal.lhotse.com
-    DocumentRoot /var/www/site2
-    Redirect permanent / https://portal.lhotse.com/
-</VirtualHost>
-
-<VirtualHost *:443>
-    ServerName portal.lhotse.com
-    DocumentRoot /var/www/site2
-
-    SSLEngine on
-    SSLCertificateFile /etc/ssl/lhotse/web.lhotse.com.crt
-    SSLCertificateKeyFile /etc/ssl/lhotse/web.lhotse.com.key
-
-    <Directory /var/www/site2>
+    <Directory /var/www/site>
         Options Indexes FollowSymLinks
         AllowOverride All
         Require all granted
