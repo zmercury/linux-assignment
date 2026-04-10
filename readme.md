@@ -514,7 +514,6 @@ sudo nano /var/named/lhotse.com.zone
 Add these lines:  A Record ma halne
 ```
 www     IN  A   192.168.56.101
-portal  IN  A   192.168.56.101
 ````
 
 Then update the serial number and restart BIND:
@@ -563,12 +562,10 @@ sudo firewall-cmd --reload
 ```bash
 # Open Firefox and go to:
 # https://www.groupname.com
-# https://portal.groupname.com
 
 # Accept the self-signed certificate warning in Firefox
 # You can also test from terminal:
 curl -k https://www.lhotse.com
-curl -k https://portal.lhotse.com
 ```
 
 📸 **Screenshot:** Both websites loading in Firefox with the padlock icon (HTTPS), certificate details.
